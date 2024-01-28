@@ -36,7 +36,7 @@ class Operator(object):
     # Use number of operations for given operator and system parameters to determine the compute time.
     def get_ideal_compute_time(self, system):
         number_of_ops = self.get_num_ops()
-        compute_time = number_of_ops/system.op_per_sec
+        compute_time = number_of_ops/system.op_per_sec/system.compute_efficiency
         return compute_time 
 
     ################################################################
@@ -47,9 +47,9 @@ class Operator(object):
         ## Number of elements
         input_a, input_b, output = self.get_tensors()
         ## Assume data format of BF16 for all both inputs and outputs.
-        input_a_read_time = input_a * 2 / system.offchip_mem_bw
-        input_b_read_time = input_b * 2 / system.offchip_mem_bw
-        output_write_time = output * 2 / system.offchip_mem_bw
+        input_a_read_time = input_a * 2 / (system.offchip_mem_bw*10^9)/system.memory_efficiency
+        input_b_read_time = input_b * 2 / (system.offchip_mem_bw*10^9)/system.memory_efficiency
+        output_write_time = output * 2 / (system.offchip_mem_bw*10^9)/system.memory_efficiency
         memory_total_time = input_a_read_time + input_b_read_time + output_write_time 
         return  memory_total_time 
 
@@ -71,7 +71,6 @@ class Operator(object):
         exec_time = max(ideal_compute_time,ideal_memory_time)
 
         thrpt = num_ops/exec_time if exec_time else 0
-        print(num_ops,"",exec_time,"  ",thrpt,"  thpt")
         com_to_mem_ratio = ideal_compute_time/ideal_memory_time if ideal_memory_time else 0
         boundedness = 'C' if com_to_mem_ratio > 1 else 'M'
 

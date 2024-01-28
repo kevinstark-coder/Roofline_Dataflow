@@ -92,7 +92,7 @@ class GEMM(Operator):
         # Function Output = Number of elements of input_a , input_b and output
         B, M, N, K = self.dim[:self.get_effective_dim_len()]
         input_a = B * M * K
-        input_b = K * M
+        input_b = K * N
         output = B * M * N
         return input_a, input_b, output
 
@@ -110,7 +110,7 @@ class GEMM(Operator):
         # Multiplication of each element is consider a single operation, i.e. 2x4 = 1 operation.
         # Hint : You can round the number of operations to the nearest. 
         # Ex: Matrix of 1x100 and 100x1 will require 100 multiplications and 99 additions ~ round this to 100 + 100 = 200
-        num_ops = B * M * N * 2 * K * K
+        num_ops = B * M * N * 2 * K
         return num_ops
     
     
@@ -135,7 +135,7 @@ class CONV2D(Operator):
         B, K, C, X, Y, R, S = self.dim[:self.get_effective_dim_len()]
         input_a = B * C * X * Y
         input_b = K * R * S * C
-        output = B * S * Y * K
+        output = B * K * Y * X
         return input_a, input_b, output
 
     ################################################################
