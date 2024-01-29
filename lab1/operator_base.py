@@ -47,9 +47,9 @@ class Operator(object):
         ## Number of elements
         input_a, input_b, output = self.get_tensors()
         ## Assume data format of BF16 for all both inputs and outputs.
-        input_a_read_time = input_a * 2 / (system.offchip_mem_bw*10^9)/system.memory_efficiency
-        input_b_read_time = input_b * 2 / (system.offchip_mem_bw*10^9)/system.memory_efficiency
-        output_write_time = output * 2 / (system.offchip_mem_bw*10^9)/system.memory_efficiency
+        input_a_read_time = input_a * 2 / (system.offchip_mem_bw)/system.memory_efficiency
+        input_b_read_time = input_b * 2 / (system.offchip_mem_bw)/system.memory_efficiency
+        output_write_time = output * 2 / (system.offchip_mem_bw)/system.memory_efficiency
         memory_total_time = input_a_read_time + input_b_read_time + output_write_time 
         return  memory_total_time 
 
